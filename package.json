@@ -18,6 +18,8 @@
   "homepage": "https://github.com/colinmoy/HackIllinois2025#readme",
   "description": "",
   "dependencies": {
-    "express": "^4.21.2"
+    "dotenv": "^16.4.7",
+    "express": "^4.21.2",
+    "openai": "^4.86.1"
   }
 }
