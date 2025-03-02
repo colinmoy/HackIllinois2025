@@ -9,6 +9,7 @@ const TextInput = () => {
   };
 
   const handleSubmit = () => {
+    console.log(inputValue);
     setInputValue("");
   };
 
@@ -27,7 +28,7 @@ const TextInput = () => {
         onKeyDown={handleKeyDown}
         placeholder="Ask me anything"
       />
-      <button onClick={handleSubmit}>Submit</button>
+      <button onClick={handleSubmit}> Submit </button>
     </div>
   );
 };
