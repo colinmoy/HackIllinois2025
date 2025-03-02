@@ -22,5 +22,5 @@
     "noFallthroughCasesInSwitch": true,
     "noUncheckedSideEffectImports": true
   },
-  "include": ["src", "src/test.tsx", "../tsconfig.json", "src/components/TextInput.tsx", "test.ts"]
+  "include": ["src"]
 }
