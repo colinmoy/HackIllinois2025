@@ -6,25 +6,65 @@ body {
   color: white; /* Set text color to white */
   display: flex;
   justify-content: center; /* Center content horizontally */
-  align-items: flex-end; /* Align content at the bottom */
+  align-items: flex-start; /* Align content at the top of the screen */
+  width: 100%; /* Ensure body takes up full width */
 }
 
 /* Main container to center items at the bottom */
 .app-container {
   display: flex;
   flex-direction: column;
-  justify-content: center; /* Center elements vertically */
+  justify-content: flex-start; /* Align items at the top */
   align-items: center; /* Center elements horizontally */
-  width: 100%;
+  width: 100%; /* Ensure full width */
+  height: 100%; /* Ensure full height of the viewport */
   padding-bottom: 20px; /* Optional: Add some space at the bottom */
+  gap: 20px; /* Space between input and chat history */
+  max-width: 100%; /* Allow to stretch 100% of available space */
+  overflow: hidden; /* Prevents overflow issues */
 }
 
-/* Container for inline elements (File upload and Record buttons) */
+/* Container for inline elements (File upload, Text box, Record buttons) */
 .input-container {
   display: flex;
   justify-content: center; /* Center elements horizontally */
   align-items: center; /* Align items vertically */
   gap: 10px; /* Add space between elements */
+  width: 100%; /* Ensure input container takes up full width */
+  max-width: 100%; /* Prevents constricting width */
+}
+
+/* Chat History Section */
+.chat-history {
+  width: 100%; /* Ensure full width of chat */
+  max-width: 800px; /* Limit the max width for better appearance */
+  height: 300px; /* Set height for the chat history */
+  overflow-y: auto; /* Enable vertical scrolling */
+  background-color: #333; /* Dark background for chat */
+  padding: 10px;
+  border-radius: 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  box-sizing: border-box; /* Ensures padding doesn’t affect size */
+}
+
+/* Message styling */
+.message {
+  padding: 10px;
+  border-radius: 10px;
+  max-width: 80%;
+  word-wrap: break-word;
+}
+
+.user {
+  background-color: #4e7dff;
+  align-self: flex-end;
+}
+
+.bot {
+  background-color: #666;
+  align-self: flex-start;
 }
 
 /* Style for the text input field */
@@ -35,8 +75,9 @@ body {
   padding: 10px;
   font-size: 16px;
   border-radius: 5px;
-  width: 300px;
-  height: 25px;
+  width: 100%; /* Take full width of the container */
+  max-width: 300px; /* Limit max width for input */
+  height: 40px; /* Increase height for better readability */
   transition: background-color 0.3s ease-in-out;
   outline: none; /* Remove blue outline */
 }
@@ -56,6 +97,7 @@ body {
   border-radius: 5px;
   cursor: pointer;
   transition: background-color 0.3s ease-in-out;
+  height: 40px;
 }
 
 /* Style for the submit button on hover */
@@ -65,7 +107,7 @@ body {
 
 /* Style for the file upload button */
 .file-upload-btn img {
-  width: 45px; /* Stretch image horizontally */
+  width: 55px; /* Stretch image horizontally */
   height: 40px;
   object-fit: fill;
   cursor: pointer;
@@ -77,6 +119,8 @@ body {
   justify-content: center;
   align-items: center;
   gap: 10px; /* Space between elements */
+  width: 100%; /* Ensure full width for button container */
+  max-width: 100%; /* Prevents constricting width */
 }
 
 /* Style for the record button icon */
