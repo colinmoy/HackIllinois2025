@@ -10,69 +10,72 @@ const App = () => {
   const [messages, setMessages] = useState<
     { text: string; isUserMessage: boolean }[]
   >([]);
-  const [loadingText, setLoadingText] = useState<string | null>(null); // Store loading text
+  const [loadingText, setLoadingText] = useState<string | null>(null);
   const [loadingDots, setLoadingDots] = useState<string>("");
+  const [inputValue, setInputValue] = useState<string>(""); // Added input state
 
   useEffect(() => {
     let interval: ReturnType<typeof setInterval>;
 
     if (loadingText !== null) {
       interval = setInterval(() => {
-        // Cycle through ".", "..", and "..."
         setLoadingDots((prev) => {
           if (prev === "") return ".";
           if (prev === ".") return "..";
           if (prev === "..") return "...";
-          return "."; // Reset back to "."
+          return ".";
         });
       }, 500);
     } else {
-      setLoadingDots(""); // Reset loading dots when loadingText is null
+      setLoadingDots("");
     }
 
-    return () => clearInterval(interval); // Cleanup interval on component unmount
+    return () => clearInterval(interval);
   }, [loadingText]);
 
   const handleTextSubmit = (message: string) => {
-    // Add user message to chat history
     setMessages((prevMessages) => [
       ...prevMessages,
       { text: message, isUserMessage: true },
     ]);
 
-    setLoadingText("Loading..."); // Set loading text when waiting for bot response
+    setLoadingText("Loading...");
 
-    // Simulate a bot response (replace with actual bot logic if needed)
     askChatBot("text", message).then((result) => {
       setTimeout(() => {
         setMessages((prevMessages) => [
           ...prevMessages,
           { text: "Bot response: " + result[0][1], isUserMessage: false },
         ]);
-        setLoadingText(null); // Stop loading animation
+        setLoadingText(null);
       }, 1000);
     });
   };
 
   return (
     <div className="app-container">
-      {/* Chat history */}
       <div className="chat-history">
         <ChatHistory
           messages={[
             ...messages,
             ...(loadingText !== null
-              ? [{ text: loadingDots, isUserMessage: false }] // Show loading animation
+              ? [{ text: loadingDots, isUserMessage: false }]
               : []),
           ]}
         />
       </div>
 
-      {/* Input and buttons */}
       <div className="input-container">
         <ImageUpload />
-        <TextInput onSubmit={handleTextSubmit} />
-        <VoiceRecord />
+        <TextInput
+          onSubmit={handleTextSubmit}
+          inputValue={inputValue}
+          setInputValue={setInputValue} // Pass input state
+        />
+        <VoiceRecord
+          onLiveTranscription={setInputValue} // Update input in real-time
+          onFinalTranscription={handleTextSubmit} // Send final text as message
+        />
       </div>
     </div>
   );
