@@ -20,25 +20,63 @@ body {
 }
 
 /* Container for inline elements (File upload and Record buttons) */
-.file-upload-container {
+.input-container {
   display: flex;
   justify-content: center; /* Center elements horizontally */
   align-items: center; /* Align items vertically */
   gap: 10px; /* Add space between elements */
 }
 
-/* Optional: Style input fields, buttons, and file upload */
-input, button {
+/* Style for the text input field */
+.text-input-container input {
+  background-color: #2f2f2f; /* Dark gray background */
+  color: white; /* White text */
+  border: 1px solid #444; /* Dark border */
   padding: 10px;
-  border-radius: 5px;
   font-size: 16px;
+  border-radius: 5px;
+  width: 300px;
+  height: 25px;
+  transition: background-color 0.3s ease-in-out;
+  outline: none; /* Remove blue outline */
+}
+
+/* Remove outline on focus */
+.text-input-container input:focus {
+  border-color: #555; /* Slightly darker border when focused */
+}
+
+/* Style for the submit button */
+.text-input-container button {
+  background-color: #2f2f2f; /* Dark gray background */
+  color: white; /* White text */
+  border: 1px solid #444; /* Dark border */
+  padding: 12.5px;
+  font-size: 16px;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease-in-out;
+}
+
+/* Style for the submit button on hover */
+.text-input-container button:hover {
+  background-color: #444; /* Slightly lighter gray on hover */
 }
 
 /* Style for the file upload button */
 .file-upload-btn img {
-  width: 40px;
+  width: 45px; /* Stretch image horizontally */
   height: 40px;
+  object-fit: fill;
   cursor: pointer;
+}
+
+/* Container for file upload and record buttons */
+.file-upload-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 10px; /* Space between elements */
 }
 
 /* Style for the record button icon */

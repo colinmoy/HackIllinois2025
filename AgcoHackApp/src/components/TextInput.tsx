@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import * from '../../../'
 
 const TextInput = () => {
   const [inputValue, setInputValue] = useState("");
@@ -9,26 +8,26 @@ const TextInput = () => {
   };
 
   const handleSubmit = () => {
-    console.log(inputValue);
-    setInputValue("");
+    setInputValue(""); // Clear the input after submitting
   };
 
   const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === "Enter") {
-      handleSubmit();
+      handleSubmit(); // Trigger submit on Enter key
     }
   };
 
   return (
-    <div>
+    <div className="text-input-container">
       <input
         type="text"
         value={inputValue}
         onChange={handleChange}
         onKeyDown={handleKeyDown}
-        placeholder="Ask me anything"
+        placeholder="Start typing..."
       />
-      <button onClick={handleSubmit}> Submit </button>
+      <button onClick={handleSubmit}>→</button>{" "}
+      {/* Submit button with an arrow */}
     </div>
   );
 };
