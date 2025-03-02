@@ -1,4 +1,5 @@
 import React, { useEffect, useRef } from "react";
+import ReactMarkdown from "react-markdown";
 
 // Define message structure to handle image, loading, and error states
 interface Message {
@@ -28,16 +29,16 @@ const ChatHistory = ({ messages }: ChatHistoryProps) => {
       className="chat-history"
       style={{
         width: "100%",
-        maxWidth: "800px", // Limit the max width as per your design
-        flex: 1, // Allow container to take available height
-        overflowY: "auto", // Enable vertical scrolling
-        backgroundColor: "#000", // Black background
+        maxWidth: "800px",
+        flex: 1,
+        overflowY: "auto",
+        backgroundColor: "#000",
         padding: "10px",
         borderRadius: "10px",
         display: "flex",
-        flexDirection: "column", // Align items in a column
-        gap: "10px", // Space between messages
-        boxSizing: "border-box", // Ensure padding doesn’t affect size
+        flexDirection: "column",
+        gap: "10px",
+        boxSizing: "border-box",
       }}
     >
       {messages.map((message, index) => (
@@ -47,18 +48,22 @@ const ChatHistory = ({ messages }: ChatHistoryProps) => {
           style={{
             padding: "10px",
             borderRadius: "10px",
-            maxWidth: "80%", // Limit max width of the message
+            maxWidth: "80%",
             wordWrap: "break-word",
-            backgroundColor: message.isUserMessage ? "#4e7dff" : "transparent", // Only user messages have background color
-            color: message.isUserMessage ? "white" : "white", // Text color for both user and bot
-            alignSelf: message.isUserMessage ? "flex-end" : "flex-start", // Align user messages right, bot messages left
-            fontSize: message.isUserMessage ? "14px" : "18px", // Larger font size for bot
-            fontWeight: message.isUserMessage ? "normal" : "bold", // Bold text for bot
+            backgroundColor: message.isUserMessage ? "#4e7dff" : "transparent",
+            color: "white",
+            alignSelf: message.isUserMessage ? "flex-end" : "flex-start",
+            fontSize: message.isUserMessage ? "14px" : "18px",
+            fontWeight: message.isUserMessage ? "normal" : "bold",
+            textAlign: message.isUserMessage ? "right" : "left",
           }}
         >
-          {message.text}
+          {message.isUserMessage ? (
+            message.text
+          ) : (
+            <ReactMarkdown>{message.text}</ReactMarkdown>
+          )}
 
-          {/* Display the image if it's uploaded */}
           {message.imageUrl && (
             <div style={{ marginTop: "10px", textAlign: "center" }}>
               <img
