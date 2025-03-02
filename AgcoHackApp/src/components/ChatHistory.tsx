@@ -1,11 +1,19 @@
 import React, { useEffect, useRef } from "react";
 
+// Define message structure to handle image, loading, and error states
+interface Message {
+  text: string;
+  isUserMessage: boolean;
+  imageUrl?: string;
+  imageLoading?: boolean;
+  imageError?: boolean;
+}
+
 interface ChatHistoryProps {
-  messages: { text: string; isUserMessage: boolean }[];
+  messages: Message[];
 }
 
 const ChatHistory = ({ messages }: ChatHistoryProps) => {
-  // Ref to the bottom of the chat container
   const chatEndRef = useRef<HTMLDivElement>(null);
 
   // Scroll to the bottom of the chat whenever the messages change
@@ -49,9 +57,23 @@ const ChatHistory = ({ messages }: ChatHistoryProps) => {
           }}
         >
           {message.text}
+
+          {/* Display the image if it's uploaded */}
+          {message.imageUrl && (
+            <div style={{ marginTop: "10px", textAlign: "center" }}>
+              <img
+                src={message.imageUrl}
+                alt="User Upload"
+                style={{
+                  maxWidth: "100%",
+                  maxHeight: "200px",
+                  borderRadius: "10px",
+                }}
+              />
+            </div>
+          )}
         </div>
       ))}
-      {/* This empty div is used to scroll the chat to the bottom */}
       <div ref={chatEndRef} />
     </div>
   );
