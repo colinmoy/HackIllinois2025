@@ -24,7 +24,7 @@ const ImageUpload = () => {
 
     try {
       const response = await axios.post(
-        "http://your-backend-url/upload",
+        "http://your-backend-url/upload", // Replace with your backend URL
         formData,
         {
           headers: {
@@ -39,13 +39,21 @@ const ImageUpload = () => {
   };
 
   return (
-    <div>
+    <div
+      className="file-upload-container"
+      style={{ display: "flex", alignItems: "center" }}
+    >
       {/* Image upload icon */}
       <label className="file-upload-btn">
         <img
           src="https://t4.ftcdn.net/jpg/10/14/50/31/360_F_1014503129_yhUdHKEpsSOhUUxTxglXj3FkZwzh2SZ0.jpg"
           alt="Upload Icon"
-          style={{ width: "75px", height: "60px", cursor: "pointer" }}
+          style={{
+            width: "100%", // Adjust the size of the image
+            height: "45px",
+            cursor: "pointer",
+            marginRight: "5px", // Reduced margin for less space
+          }}
         />
         <input
           type="file"

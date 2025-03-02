@@ -20,16 +20,17 @@ const ChatHistory = ({ messages }: ChatHistoryProps) => {
       className="chat-history"
       style={{
         width: "100%",
-        maxWidth: "500px",
-        height: "300px",
-        overflowY: "auto",
-        backgroundColor: "#333",
+        maxWidth: "800px", // Limit the max width as per your design
+        flex: 1, // Allow container to take available height
+        overflowY: "auto", // Enable vertical scrolling
+        backgroundColor: "#000", // Black background
         padding: "10px",
         borderRadius: "10px",
         display: "flex",
-        flexDirection: "column",
-        gap: "10px",
-        scrollBehavior: "smooth", // Apply smooth scroll behavior
+        flexDirection: "column", // Align items in a column
+        gap: "10px", // Space between messages
+        boxSizing: "border-box", // Ensure padding doesn’t affect size
+        // No border property, so no border color will be applied
       }}
     >
       {messages.map((message, index) => (
@@ -39,10 +40,10 @@ const ChatHistory = ({ messages }: ChatHistoryProps) => {
           style={{
             padding: "10px",
             borderRadius: "10px",
-            maxWidth: "80%",
+            maxWidth: "80%", // Limit max width of the message
             wordWrap: "break-word",
             backgroundColor: message.isUserMessage ? "#4e7dff" : "#666",
-            alignSelf: message.isUserMessage ? "flex-end" : "flex-start",
+            alignSelf: message.isUserMessage ? "flex-end" : "flex-start", // Align user messages right, bot messages left
           }}
         >
           {message.text}
