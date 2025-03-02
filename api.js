@@ -1,17 +1,22 @@
-const axios = require("axios");
-require('dotenv').config();
-const fs = require('node:fs');
+import axios from 'axios'
+import { configDotenv } from 'dotenv';
+import * as fs from 'node:fs';
+configDotenv()
 
 const AZURE_OPENAI_API_KEY = process.env.AZURE_OPENAI_API_KEY;
 const AZURE_OPENAI_ENDPOINT = "https://openai-agco-poc.openai.azure.com";
 const API_VERSION = "2024-10-21";
 
-// Define the endpoints
+// Define the endpoints (AI used)
 const endpoints = {
-    gpt_40: "gpt-4o-2",
+    // gpt_40: "gpt-4o-2",
     gpt_o1_mini: "o1-mini"
 };
 
+// Define the payload (Message log)
+const payload = {
+    messages: []
+};
 
 // Function to test an endpoint. Returns the message content if worked, null otherwise.
 async function testEndpoint(name, deploymentId, payload) {
@@ -38,21 +43,15 @@ async function testEndpoint(name, deploymentId, payload) {
 //inputMessage : String
 //Returns [{chatBotName : String, response : String (or null on error)}] 
 //Returns the response in the {chatBotName}.txt file
-async function askChatBot(inputMessage){
+export async function askChatBot(messageType, inputMessage){
     
-    // Define the payload
-    const payload = {
-        messages: [
-            { role: "user", content: inputMessage }
-        ]
-    };
+    payload.messages.push({role: "user", content: [{type: messageType, text: inputMessage}] })
     
     const outputMessages = await (async () => {
         const outputMessages = [];
-        let i = 0;
         for (const [name, deploymentId] of Object.entries(endpoints)) {
             let botResponse = testEndpoint(name, deploymentId, payload);
-            outputMessages[i++] = [name, await botResponse];
+            outputMessages.push([name, await botResponse]);
         }
     
         return outputMessages;
@@ -66,4 +65,12 @@ async function askChatBot(inputMessage){
     return outputMessages
 }
 
-askChatBot("Testing Testing 1 2 3");
+//Clears the current message log.
+function clearMessageLog(){
+    payload.messages = [];
+}
+
+await askChatBot("text","Say Hello when I say 93 but say the word apple right now");
+await askChatBot("text","93");
+clearMessageLog();
+await askChatBot("text","93");
