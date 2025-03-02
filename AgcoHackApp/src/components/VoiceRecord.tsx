@@ -3,9 +3,10 @@ import React, { useState, useEffect, useRef } from "react";
 interface VoiceRecordProps {
   onLiveTranscription: (text: string) => void;
   onFinalTranscription: (text: string) => void;
+  isRecording: boolean;
+  setIsRecording: (value: boolean) => void;
 }
 
-// Fix: Declare missing Web Speech API types
 declare global {
   interface Window {
     SpeechRecognition: any;
@@ -21,11 +22,12 @@ declare global {
 const VoiceRecord: React.FC<VoiceRecordProps> = ({
   onLiveTranscription,
   onFinalTranscription,
+  isRecording,
+  setIsRecording,
 }) => {
-  const [isRecording, setIsRecording] = useState(false);
   const recognitionRef = useRef<SpeechRecognition | null>(null);
   const silenceTimeoutRef = useRef<NodeJS.Timeout | null>(null);
-  const transcriptRef = useRef<string>("");
+  const transcriptBuffer = useRef<string[]>([]);
 
   useEffect(() => {
     if (
@@ -55,13 +57,12 @@ const VoiceRecord: React.FC<VoiceRecordProps> = ({
       }
 
       if (isFinal) {
-        // Only append final results to the main transcript
-        transcriptRef.current += " " + newTranscript.trim();
-        transcriptRef.current = transcriptRef.current.trim();
+        transcriptBuffer.current.push(newTranscript.trim());
+        const cleanTranscript = transcriptBuffer.current
+          .join(" ")
+          .replace(/\b(\w+)\s+\1\b/g, "$1");
+        onLiveTranscription(cleanTranscript);
         resetSilenceTimer();
-      } else {
-        // Show interim results as they come in (without adding to the main transcript)
-        onLiveTranscription(transcriptRef.current + " " + newTranscript.trim());
       }
     };
 
@@ -72,9 +73,7 @@ const VoiceRecord: React.FC<VoiceRecordProps> = ({
 
     recognition.onend = () => {
       if (isRecording) {
-        recognition.start(); // Restart if still recording
-      } else {
-        setIsRecording(false);
+        recognition.start();
       }
     };
 
@@ -82,13 +81,13 @@ const VoiceRecord: React.FC<VoiceRecordProps> = ({
       recognition.stop();
       clearSilenceTimer();
     };
-  }, [onLiveTranscription, onFinalTranscription]);
+  }, []);
 
   const startRecording = () => {
     if (!recognitionRef.current) return;
     setIsRecording(true);
-    transcriptRef.current = ""; // Reset transcript
     recognitionRef.current.start();
+    transcriptBuffer.current = [];
     resetSilenceTimer();
   };
 
@@ -98,10 +97,11 @@ const VoiceRecord: React.FC<VoiceRecordProps> = ({
     setIsRecording(false);
     clearSilenceTimer();
 
-    // Only submit if the text contains meaningful content
-    if (transcriptRef.current.trim().length > 0) {
-      onFinalTranscription(transcriptRef.current.trim());
+    const finalText = transcriptBuffer.current.join(" ").trim();
+    if (finalText) {
+      onFinalTranscription(finalText);
     }
+    transcriptBuffer.current = [];
   };
 
   const resetSilenceTimer = () => {
@@ -110,7 +110,7 @@ const VoiceRecord: React.FC<VoiceRecordProps> = ({
     }
     silenceTimeoutRef.current = setTimeout(() => {
       stopRecording();
-    }, 10000); // **Mic stays on for 10 seconds after last speech**
+    }, 10000);
   };
 
   const clearSilenceTimer = () => {
@@ -137,7 +137,6 @@ const VoiceRecord: React.FC<VoiceRecordProps> = ({
         transition: "background-color 0.3s ease-in-out",
       }}
     >
-      {/* Mic Icon (SVG) */}
       <svg
         xmlns="http://www.w3.org/2000/svg"
         viewBox="0 0 24 24"

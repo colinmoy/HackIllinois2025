@@ -12,7 +12,9 @@ const App = () => {
   >([]);
   const [loadingText, setLoadingText] = useState<string | null>(null);
   const [loadingDots, setLoadingDots] = useState<string>("");
-  const [inputValue, setInputValue] = useState<string>(""); // Added input state
+  const [inputValue, setInputValue] = useState<string>("");
+  const [isBotResponding, setIsBotResponding] = useState<boolean>(false);
+  const [isRecording, setIsRecording] = useState<boolean>(false);
 
   useEffect(() => {
     let interval: ReturnType<typeof setInterval>;
@@ -34,12 +36,26 @@ const App = () => {
   }, [loadingText]);
 
   const handleTextSubmit = (message: string) => {
+    if (isBotResponding) {
+      return; // Prevent sending if the bot is still responding
+    }
+
+    if (!message.trim()) {
+      return; // Don't send empty messages
+    }
+
+    // Stop recording if the mic is on
+    if (isRecording) {
+      setIsRecording(false);
+    }
+
     setMessages((prevMessages) => [
       ...prevMessages,
       { text: message, isUserMessage: true },
     ]);
 
     setLoadingText("Loading...");
+    setIsBotResponding(true);
 
     askChatBot("text", message).then((result) => {
       setTimeout(() => {
@@ -48,8 +64,12 @@ const App = () => {
           { text: "Bot response: " + result[0][1], isUserMessage: false },
         ]);
         setLoadingText(null);
+        setIsBotResponding(false);
       }, 1000);
     });
+
+    // Clear input only if the message was actually sent
+    setInputValue("");
   };
 
   return (
@@ -70,11 +90,13 @@ const App = () => {
         <TextInput
           onSubmit={handleTextSubmit}
           inputValue={inputValue}
-          setInputValue={setInputValue} // Pass input state
+          setInputValue={setInputValue}
         />
         <VoiceRecord
-          onLiveTranscription={setInputValue} // Update input in real-time
-          onFinalTranscription={handleTextSubmit} // Send final text as message
+          onLiveTranscription={(text) => setInputValue(text)}
+          onFinalTranscription={(text) => handleTextSubmit(text)}
+          isRecording={isRecording}
+          setIsRecording={setIsRecording}
         />
       </div>
     </div>
