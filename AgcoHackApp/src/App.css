@@ -1,0 +1,60 @@
+/* Ensure the container takes the full height of the viewport */
+body {
+  margin: 0;
+  height: 100vh; /* Full height of the viewport */
+  background-color: black; /* Set background to black */
+  color: white; /* Set text color to white */
+  display: flex;
+  justify-content: center; /* Center content horizontally */
+  align-items: flex-end; /* Align content at the bottom */
+}
+
+/* Main container to center items at the bottom */
+.app-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center; /* Center elements vertically */
+  align-items: center; /* Center elements horizontally */
+  width: 100%;
+  padding-bottom: 20px; /* Optional: Add some space at the bottom */
+}
+
+/* Container for inline elements (File upload and Record buttons) */
+.file-upload-container {
+  display: flex;
+  justify-content: center; /* Center elements horizontally */
+  align-items: center; /* Align items vertically */
+  gap: 10px; /* Add space between elements */
+}
+
+/* Optional: Style input fields, buttons, and file upload */
+input, button {
+  padding: 10px;
+  border-radius: 5px;
+  font-size: 16px;
+}
+
+/* Style for the file upload button */
+.file-upload-btn img {
+  width: 40px;
+  height: 40px;
+  cursor: pointer;
+}
+
+/* Style for the record button icon */
+.record-icon {
+  width: 40px;
+  height: 40px;
+  cursor: pointer;
+  transition: filter 0.3s ease-in-out;
+}
+
+/* Black and white (monotone) filter for the record icon when not recording */
+.record-icon:not(.active) {
+  filter: grayscale(100%);
+}
+
+/* Remove the filter (color) when recording */
+.record-icon.active {
+  filter: none;
+}
