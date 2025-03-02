@@ -1,13 +1,17 @@
 import React from "react";
 
-const TextInput = ({
-  onSubmit,
-  inputValue,
-  setInputValue,
-}: {
+interface TextInputProps {
   onSubmit: (message: string) => void;
   inputValue: string;
   setInputValue: React.Dispatch<React.SetStateAction<string>>;
+  inputHeight?: string;
+}
+
+const TextInput: React.FC<TextInputProps> = ({
+  onSubmit,
+  inputValue,
+  setInputValue,
+  inputHeight = "45px", // Default height if not provided
 }) => {
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setInputValue(e.target.value);
@@ -16,7 +20,7 @@ const TextInput = ({
   const handleSubmit = () => {
     if (inputValue.trim() === "") return;
     onSubmit(inputValue);
-    setInputValue(""); // Clear the input field
+    setInputValue(""); // Clear the input field upon submit
   };
 
   const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
@@ -46,12 +50,11 @@ const TextInput = ({
           backgroundColor: "#2f2f2f",
           color: "white",
           border: "1px solid #444",
-          padding: "12px 12px 12px 20px",
-          fontSize: "16px",
+          padding: "12px 45px 12px 20px", // Increased right padding to 45px\n          fontSize: "16px",
           borderRadius: "10px",
           width: "100%",
-          height: "45px",
-          transition: "background-color 0.3s ease-in-out",
+          height: inputHeight,
+          overflowX: "auto", // Allow horizontal scrolling if text is too long\n          transition: "background-color 0.3s ease-in-out",
           outline: "none",
         }}
       />

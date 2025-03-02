@@ -8,7 +8,7 @@ import { askChatBot } from "../test";
 
 const App = () => {
   const [messages, setMessages] = useState<
-    { text: string; isUserMessage: boolean }[]
+    { text: string; isUserMessage: boolean; imageUrl?: string }[]
   >([]);
   const [loadingText, setLoadingText] = useState<string | null>(null);
   const [loadingDots, setLoadingDots] = useState<string>("");
@@ -39,7 +39,6 @@ const App = () => {
     if (isBotResponding) {
       return; // Prevent sending if the bot is still responding
     }
-
     if (!message.trim()) {
       return; // Don't send empty messages
     }
@@ -72,6 +71,24 @@ const App = () => {
     setInputValue("");
   };
 
+  const handleImageUpload = (imageUrl: string) => {
+    // Add the uploaded image as a user message
+    setMessages((prevMessages) => [
+      ...prevMessages,
+      { text: "", isUserMessage: true, imageUrl },
+    ]);
+
+    // Optionally, send the image URL to your bot's API
+    askChatBot("image", imageUrl).then((result) => {
+      setTimeout(() => {
+        setMessages((prevMessages) => [
+          ...prevMessages,
+          { text: "Bot response: " + result[0][1], isUserMessage: false },
+        ]);
+      }, 1000);
+    });
+  };
+
   return (
     <div className="app-container">
       <div className="chat-history">
@@ -86,11 +103,12 @@ const App = () => {
       </div>
 
       <div className="input-container">
-        <ImageUpload />
+        <ImageUpload onUpload={handleImageUpload} />
         <TextInput
           onSubmit={handleTextSubmit}
           inputValue={inputValue}
           setInputValue={setInputValue}
+          inputHeight="30px" // Pass the desired input height to TextInput
         />
         <VoiceRecord
           onLiveTranscription={(text) => setInputValue(text)}
