@@ -1,25 +1,24 @@
 import axios from 'axios';
 import { configDotenv } from 'dotenv';
-import * as fs from 'node:fs';
-configDotenv();
+// configDotenv();
 
-const AZURE_OPENAI_API_KEY = process.env.AZURE_OPENAI_API_KEY;
-const AZURE_OPENAI_ENDPOINT = "https://openai-agco-poc.openai.azure.com";
-const API_VERSION = "2024-10-21";
+export const AZURE_OPENAI_API_KEY = process.env.REACT_APP_AZURE_OPENAI_API_KEY; //PUT API HERE
+export const AZURE_OPENAI_ENDPOINT = "https://openai-agco-poc.openai.azure.com";
+export const API_VERSION = "2024-10-21";
 
 // Define the endpoints (AI used)
-const endpoints: Record<string, string> = {
+export const endpoints: Record<string, string> = {
     // gpt_40: "gpt-4o-2",
     gpt_o1_mini: "o1-mini"
 };
 
 // Define the payload (Message log)
-const payload: { messages: Array<{ role: string, content: Array<{ type: string, text: string }> }> } = {
+export const payload: { messages: Array<{ role: string, content: Array<{ type: string, text: string }> }> } = {
     messages: []
 };
 
 // Function to test an endpoint. Returns the message content if it works, null otherwise.
-async function testEndpoint(name: string, deploymentId: string, payload: { messages: Array<{ role: string, content: Array<{ type: string, text: string }> }> }): Promise<string | null> {
+export async function testEndpoint(name: string, deploymentId: string, payload: { messages: Array<{ role: string, content: Array<{ type: string, text: string }> }> }): Promise<string | null> {
     try {
         const response = await axios.post(
             `${AZURE_OPENAI_ENDPOINT}/openai/deployments/${deploymentId}/chat/completions?api-version=${API_VERSION}`,
@@ -56,20 +55,10 @@ export async function askChatBot(messageType: string, inputMessage: string): Pro
         return outputMessages;
     })();
 
-    for (const [name, response] of outputMessages) {
-        console.log(response);
-        fs.writeFile(`${name}.txt`, response || '', { flag: 'w' }, err => {});
-    }
-
     return outputMessages;
 }
 
 // Clears the current message log.
-function clearMessageLog(): void {
+export function clearMessageLog(): void {
     payload.messages = [];
 }
-
-await askChatBot("text", "Say Hello when I say 93 but say the word apple right now");
-await askChatBot("text", "93");
-clearMessageLog();
-await askChatBot("text", "93");

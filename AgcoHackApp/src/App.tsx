@@ -4,6 +4,8 @@ import ChatHistory from "./components/ChatHistory";
 import ImageUpload from "./components/ImageUpload";
 import VoiceRecord from "./components/VoiceRecord";
 import "./App.css"; // Assuming you have an external CSS file for styles
+import {askChatBot} from "../test"
+
 
 const App = () => {
   const [messages, setMessages] = useState<
@@ -16,14 +18,22 @@ const App = () => {
       ...prevMessages,
       { text: message, isUserMessage: true },
     ]);
+    
+    askChatBot("text", message).then(
+      result => {
+        // Simulate a bot response (replace with actual bot logic if needed)
+        setTimeout(() => {
+          setMessages((prevMessages) => [
+            ...prevMessages,
+            { text: "Bot response: " + result[0][1], isUserMessage: false },
+          ]);
+        }, 1000);
 
-    // Simulate a bot response (replace with actual bot logic if needed)
-    setTimeout(() => {
-      setMessages((prevMessages) => [
-        ...prevMessages,
-        { text: "Bot response: " + message, isUserMessage: false },
-      ]);
-    }, 1000);
+      }
+    )
+
+
+
   };
 
   return (
@@ -44,3 +54,4 @@ const App = () => {
 };
 
 export default App;
+

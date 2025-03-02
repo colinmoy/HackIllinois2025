@@ -1,5 +1,6 @@
 import React, { useState } from "react";
-import "../../test"
+import.meta.env
+
 
 const TextInput = ({ onSubmit }: { onSubmit: (message: string) => void }) => {
   const [inputValue, setInputValue] = useState("");
