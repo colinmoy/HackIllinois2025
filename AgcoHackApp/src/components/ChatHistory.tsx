@@ -30,7 +30,6 @@ const ChatHistory = ({ messages }: ChatHistoryProps) => {
         flexDirection: "column", // Align items in a column
         gap: "10px", // Space between messages
         boxSizing: "border-box", // Ensure padding doesn’t affect size
-        // No border property, so no border color will be applied
       }}
     >
       {messages.map((message, index) => (
@@ -42,8 +41,11 @@ const ChatHistory = ({ messages }: ChatHistoryProps) => {
             borderRadius: "10px",
             maxWidth: "80%", // Limit max width of the message
             wordWrap: "break-word",
-            backgroundColor: message.isUserMessage ? "#4e7dff" : "#666",
+            backgroundColor: message.isUserMessage ? "#4e7dff" : "transparent", // Only user messages have background color
+            color: message.isUserMessage ? "white" : "white", // Text color for both user and bot
             alignSelf: message.isUserMessage ? "flex-end" : "flex-start", // Align user messages right, bot messages left
+            fontSize: message.isUserMessage ? "14px" : "18px", // Larger font size for bot
+            fontWeight: message.isUserMessage ? "normal" : "bold", // Bold text for bot
           }}
         >
           {message.text}

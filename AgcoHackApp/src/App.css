@@ -44,14 +44,18 @@ body {
   word-wrap: break-word;
 }
 
+/* User message styling */
 .user {
-  background-color: #4e7dff;
+  background-color: #4e7dff; /* Blue background for user messages */
   align-self: flex-end; /* Align user messages to the right */
+  color: white; /* White text for user messages */
 }
 
+/* Bot message styling */
 .bot {
-  background-color: #666;
-  align-self: flex-start; /* Align bot messages to the left */
+  align-self: center; /* Align bot messages to the center */
+  background-color: transparent; /* No background for bot messages */
+  color: white; /* White text for bot messages */
 }
 
 /* Container for inline elements (File upload, Text box, Record buttons) */
